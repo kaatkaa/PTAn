@@ -1,0 +1,22 @@
+{
+    "IAT": {
+        "anName": "IAT Logos",
+        "categoriesInterfaceTitle": "All vs Relation/NoRelation",
+        "Wordcloud_filterInterface": "Choose logos types...",
+        "colName": []
+    },
+    "Subject & Predicate": {
+        "anName": "PTAn Subject & Predicate",
+        "categoriesInterfaceTitle": "All vs Relation/NoRelation",
+        "Wordcloud_filterInterface": "Choose statement types...",
+        "colName": ["predicate","subject","multif_subj"],
+        "colNameWS": ["predicate","subject","multif_subj"]
+    },
+    "Statements": {
+        "anName": "PTAn Statements",
+        "categoriesInterfaceTitle": "All vs Relation/NoRelation",
+        "Wordcloud_filterInterface": "Choose statement types...",
+        "colName": ["predicate","subject","multif_subj"],
+        "colNameWS": ["predicate","subject","multif_subj"]
+    }
+}
