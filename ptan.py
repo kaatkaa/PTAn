@@ -33,6 +33,12 @@ __AnConfig = {
     # end of subplot Table configuration
     # Variable below enables "Chart" or "Text" component in SuperTextComponent superclass
     'objectToEnable': "Chart",
+    #Text or Speaker
+    'unitTextSpeakerOptions': ['Text','Speaker'],
+    'unitTextSpeakerIndex': 0,
+    'unitTextOrSpeaker': "Text",
+    'unitSpeakerLst': None,
+    'unitSpeakerSel': None,
     #Number or percentage
     'showPercentageNumber': False,
     'unitPercentNumberIndex': 0,
@@ -44,8 +50,6 @@ __AnConfig = {
     'categoriesColumn': '',
     'categoriesLst': DataProvider.getPTA_NrelSP_Dims(),
     'categoriesLstRel': DataProvider.getPTA_RelSP_Dims(),
-    # Text or speaker
-    'unitChoice': None,
     # Color palette
     'palette': DataProvider.getPTA_NrelSP_Colors(),
     'text_color': DataProvider.getPTA_NrelSP_ColorsText(),

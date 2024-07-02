@@ -18,10 +18,10 @@ class Piechart2(SuperChartComponent):
             displayer = 'percent+label'
         elif self._cf['unitPercentNumber'] == "Number":
             displayer = 'text+label'
-        if self._cf['unitChoice'] == None:
+        if self._cf['unitSpeakerSel'] == None:
             unit = "Text"
         else:
-            unit = self._cf['unitChoice']
+            unit = self._cf['unitSpeakerSel']
         if len(namesLst) == 3:
             labelsDic = {}
             labelsDic[namesLst[2]] = sorted(data[namesLst[2]].tolist())

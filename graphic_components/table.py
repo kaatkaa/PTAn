@@ -15,10 +15,10 @@ class Table2(SuperChartComponent):
 
     def getChartObj(self, df: Any, t: str) -> Any:
         columnLst = list(df.columns.values)
-        if self._cf['unitChoice'] == None:
+        if self._cf['unitSpeakerSel'] == None:
             unit = "Text"
         else:
-            unit = self._cf['unitChoice']
+            unit = self._cf['unitSpeakerSel']
         def make_pretty(styler):
             styler.set_caption(unit)
             styler.set_table_styles(DataProvider.getTableFormat())

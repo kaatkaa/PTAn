@@ -16,10 +16,10 @@ class Barchart2(SuperChartComponent):
     def getChartObj(self, data: Any, t: str) -> sns.barplot():
         columnLst = list(data.columns.values)
         if len(columnLst) > 0:
-            if self._cf['unitChoice'] == None:
+            if self._cf['unitSpeakerSel'] == None:
                 unit = "Text"
             else:
-                unit = self._cf['unitChoice']
+                unit = self._cf['unitSpeakerSel']
             if self._cf['imediatePlot']:
                 fig, z = plt.subplots(figsize=(7, 8))
                 z = sns.barplot(data = data, x = columnLst[0], y = columnLst[1], 

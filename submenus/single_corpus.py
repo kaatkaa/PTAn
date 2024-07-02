@@ -161,34 +161,34 @@ class SingleCorpusMenu:
         """,unsafe_allow_html=True)
             
 
-    def sidebar(self):       
+    def sidebar(self):
+        def unitUpdate():
+            st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] = int(
+                not bool(st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'])
+            )
+            if st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] == 1:
+                st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]].unique().tolist()
+                st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerLst'][0]
+            elif st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] == 0:
+                st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = None
+                st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = None
+            else:
+                st.error("Wrong units option: ",st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'],
+                    "Must be Text or Speaker.")
+            
         with st.sidebar:
             st.subheader("Choose Corpora: ")           
             st.button("Clean selection",key=self.__prefix+"clear_corpo_button",on_click=self.cleanSelections)
             self.__corporaPickerChckBox()
             st.write("****************************")
             st.subheader("Analysis Units")
-            Text_or_Speaker = st.radio("Unit picker",("Text","Speaker"),
-                     key=self.__prefix+"Text-Based",
-                     index=0,
-                     label_visibility='hidden')
-            if Text_or_Speaker == "Text":
-                st.session_state[self.__prefix + 'unitChoice'] = None
-            elif Text_or_Speaker == "Speaker":
-                if len(self.__ptan_df) > 0:
-                    speakersLst = self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]].unique().tolist()
-                    speaker = st.radio("Choose Speaker: ",
-                        speakersLst,
-                        key=self.__prefix+"Choose_Speaker")
-                    self.__ptan_df = self.__ptan_df.loc[self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]] == speaker]
-                    self.__iat_df = self.__iat_df.loc[
-                        (self.__iat_df[DataProvider.getSpeakerColumnNamesLst()[1]] == speaker) | 
-                        (self.__iat_df[DataProvider.getSpeakerColumnNamesLst()[2]] == speaker)]
-                    st.session_state[self.__prefix + 'unitChoice'] = speaker
-                    st.session_state[st.session_state['cfgId']]['unitChoice'] = speaker
-                else:
-                    st.session_state[self.__prefix + 'unitChoice'] = None
-                    st.session_state[st.session_state['cfgId']]['unitChoice'] = None
+            st.session_state[st.session_state['cfgId']]['unitTextOrSpeaker'] = st.radio("Unit picker",
+                st.session_state[st.session_state['cfgId']]['unitTextSpeakerOptions'],
+                key=self.__prefix+"Text-Based",
+                index=0,
+                on_change=unitUpdate,
+                label_visibility='hidden'
+            )
             st.write("****************************")
             st.subheader("Statictical module")
             module_choice = st.radio("An. Module", \
@@ -237,11 +237,13 @@ class SingleCorpusMenu:
     def getCriteria(self) -> str:
         if len(self.__dataDic) > 0:
             newLst = []
-            # if st.session_state[self.__prefix + 'Units'] == "Text-Based Analysis":
-            if self.__prefix + 'unitChoice' in st.session_state:
-                newLst = ['Unit: '+st.session_state[self.__prefix + 'unitChoice']]
+            if st.session_state[st.session_state['cfgId']]['unitTextOrSpeaker'] == "Speaker":
+                if self.__prefix + 'unitSpeakerSel' in st.session_state:
+                    newLst = ['Speaker: '+st.session_state[self.__prefix+'unitSpeakerSel']]
+                else:
+                    newLst = ['error']
             else:
-                newLst = ['error']
+                newLst = ['Text']
             ctr = 1
             for key in self.__dataDic:
                 if key.endswith("PTA"):
@@ -257,29 +259,30 @@ class SingleCorpusMenu:
         return self.criteria
 
     def tab(self):
+        def unitUpade():
+            if st.session_state[st.session_state['cfgId']]['unitTextOrSpeaker'] == "Text":
+                st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = None
+                st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = None
+            elif st.session_state[st.session_state['cfgId']]['unitTextOrSpeaker'] == "Speaker":
+                st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]].unique().tolist()
+                st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel'] = st.selectbox("Choose Speaker: ",
+                    st.session_state[st.session_state['cfgId']]['unitSpeakerLst'],
+                    key=self.__prefix+"Choose_Cmp_Speaker")
+                self.__ptan_df = self.__ptan_df.loc[self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]] == st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel']]
+            self.__ptan_df = self.__ptan_old.copy(deep=True)
+            self.__iat_df = self.__iat_old.copy(deep=True)
         st.subheader("Choose Corpora: ")
         self.__corporaPickerChckBox()
         if len(self.__ptan_old) > 0:
-            unitChoice = st.radio("Choose Unit Type: ",
+            st.session_state[st.session_state['cfgId']]['unitTextOrSpeaker'] = st.radio("Choose Unit Type: ",
                 ("Text","Speaker"),
+                on_change=unitUpade,
+                index=1,
                 key=self.__prefix+"Text_Cmp_Speaker")
-            if unitChoice == "Text":
-                self.__ptan_df = self.__ptan_old.copy(deep=True)
-                self.__iat_df = self.__iat_old.copy(deep=True)
-                speaker = "Text"
-            elif unitChoice == "Speaker":
-                self.__ptan_df = self.__ptan_old.copy(deep=True)
-                self.__iat_df = self.__iat_old.copy(deep=True)
-                speakersLst = self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]].unique().tolist()
-                speaker = st.radio("Choose Speaker: ",
-                    speakersLst,
-                    key=self.__prefix+"Choose_Cmp_Speaker")
-                self.__ptan_df = self.__ptan_df.loc[self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]] == speaker]
-                self.__iat_df = self.__iat_df.loc[
-                    (self.__iat_df[DataProvider.getSpeakerColumnNamesLst()[1]] == speaker) | 
-                    (self.__iat_df[DataProvider.getSpeakerColumnNamesLst()[2]] == speaker)]
-            st.session_state[self.__prefix + 'unitChoice'] = speaker
+                # self.__iat_df = self.__iat_df.loc[
+                #     (self.__iat_df[DataProvider.getSpeakerColumnNamesLst()[1]] == speaker) | 
+                #     (self.__iat_df[DataProvider.getSpeakerColumnNamesLst()[2]] == speaker)]
 
     #Returns data for diagrams
     def getDF(self) -> List[pd.DataFrame]:
-        return [self.__ptan_df, self.__iat_df]
+        return [self.__ptan_df, self.__iat_df, self.__prefix]

@@ -25,11 +25,6 @@ class CmpCorpusMenu:
             'showPercentageNumber': True,
             'unitPercentNumber': 'Percentage',
             'showCategoriesInterface': True,
-            'categoriesColumn': '',
-            'SS + OS rephrase': False,
-            'SS rephrase': False,
-            'OS rephrase': False,
-            'showInOutInterface': True,
             'showStopWordsInterface':True,
             'showStopwords':False,
             'useStopwords':True,
@@ -69,7 +64,7 @@ class CmpCorpusMenu:
                         del self.__keyDic[str(ctr)+"_"]
                     self.__keyDic[str(ctr)+"_"] = self.__tabLabels[ctr]+" |"+self.__dataLoaders[ctr].getCriteria()
                     st.write(self.__keyDic[str(ctr)+"_"])
-                    self.__dataDic[self.__keyDic[str(ctr)+"_"]] = self.__dataLoaders[ctr].getDF()[0]
+                    self.__dataDic[self.__keyDic[str(ctr)+"_"]] = self.__dataLoaders[ctr].getDF()
             else:
                 with i:
                     st.subheader(self.__tabLabels[ctr])

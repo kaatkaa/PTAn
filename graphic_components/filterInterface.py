@@ -34,7 +34,7 @@ class FilterInterface:
 
     def __filterInterface(self) -> Tuple[Any, list[str]]:
 
-        col_radio1, col_radio2, col_chckbox1= st.columns(3)
+        col_radio1, col_radio2, col_user_sel= st.columns(3)
 
         if self.__cf['showPercentageNumber']:
             with col_radio1:
@@ -44,12 +44,16 @@ class FilterInterface:
             self.__categories(col_radio2)
 
         if self.__cf['imediatePlot']:
-            if self.__cf['unitChoice'] == None:
-                with col_chckbox1:
+            if self.__cf['unitTextOrSpeaker'] == "Text":
+                with col_user_sel:
                     st.write("Selected unit: \"Text\"")
             else:
-                with col_chckbox1:
-                    st.write("Selected unit: \"Speaker\"")
+                with col_user_sel:
+                    st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.selectbox("Pick user to analyse: ",
+                        st.session_state[st.session_state['cfgId']]['unitSpeakerLst'],
+                        index = 0,
+                        key="Speaker_mode_sel"                                                                  
+                    )
 
         if self.__cf['showStopWordsInterface']:
             self.__stopWords()

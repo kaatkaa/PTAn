@@ -9,10 +9,10 @@ from graphic_components.superComponent import SuperTextComponent
 class Cases2(SuperTextComponent):
 
     def getTextObj(self, data: Any, t: str) -> Any:
-        if self._cf['unitChoice'] == None:
+        if self._cf['unitSpeakerSel'] == None:
             unit = "Text"
         else:
-            unit = self._cf['unitChoice']
+            unit = self._cf['unitSpeakerSel']
         backgroundColor = self._cf['palette']
         textColor = self._cf['text_color']
         def color(row):

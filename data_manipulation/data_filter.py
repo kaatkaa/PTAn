@@ -44,7 +44,8 @@ class DataFilter:
                 dataF[column] = dataF[column].str.replace(p2, "", regex=True)
         self.__outputData = dataF
 
-    def __init__(self, data: Any, config: Dict[str, Any]) -> None:
+    def __init__(self, data: Any, config: Dict[str, Any], prefix: str='') -> None:
+        self.__prefix = prefix
         self.__cf=DataFilter.__config
         self.__stop_words_set = self.__cf['StopwordsSet']
         self.__ngramLst = []
@@ -76,7 +77,6 @@ class DataFilter:
     def __filterInterface(self) -> Tuple[Any, list[str]]:        
         if self.__cf['showCategoriesInterface'] and len(self.__outputData) > 0:
             if self.__cf['categoryIndex'] == 0:
-                #st.write()
                 self.__outputData = self.__outputData.loc[self.__outputData[self.__cf['categoriesColumn']].isin(self.__cf['categoriesLst'])]
             elif self.__cf['categoryIndex'] == 1:
                 self.__outputData = self.__outputData.loc[self.__outputData[self.__cf['categoriesColumn']].isin(self.__cf['categoriesLstRel'])]
@@ -87,9 +87,22 @@ class DataFilter:
             self.__RemoveStopWordsFromDf(self.__outputData, self.__cf['inOutLst'], self.__stop_words_set)
 
         if self.__cf['imediatePlot']:
+            if self.__cf['unitTextOrSpeaker'] == "Text":
+                pass
+            elif self.__cf['unitTextOrSpeaker'] == "Speaker":
+                # not refreshing in filterInterface!!!
+                self.__outputData = self.__outputData.loc[
+                    self.__outputData[DataProvider.getSpeakerColumnNamesLst()[0]] == st.session_state[st.session_state['cfgId']]['unitSpeakerSel']
+                ]
             self.__outDict["whole Text"] = self.__outputData
             self.__outDict["grupped Text"] = self.__distributionData(self.__outputData, self.__cf['categoriesColumn'])
         else:
+            if self.__cf['unitTextOrSpeaker'] == "Text":
+                pass
+            elif self.__cf['unitTextOrSpeaker'] == "Speaker":
+                self.__outputData = self.__outputData.loc[
+                    self.__outputData[DataProvider.getSpeakerColumnNamesLst()[0] == st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel']]
+                ]
             self.__outDict["wholeAll"] = self.__outputData
             self.__outDict["gruppedAll"] = self.__distributionData(self.__outputData, self.__cf['categoriesColumn']) 
 
