@@ -17,15 +17,15 @@ class DataProvider:
     __PTAn_file = 'config/PTAnConfig.json'
     __lst_of_st_pred_NoRel = ['Subject', 'Predicate', 'Multif_subj']
     __lst_of_st_pred_Rel = ['Subject_noRel', 'Predicate_noRel', 'Multif_subj_noRel','Subject_Rel', 'Predicate_Rel', 'Multif_subj_Rel']
+    __lst_of_SPVo = ['STATEMENT_OF_VALUE','STATEMENT_OF_FACT','STATEMENT_OF_POLICY','no_relation']
 
-
-    __color_SP_noRel = {'Subject':'#008CFF','Predicate':'#E02D00','Multif_subj':'#FC7601'}
+    __color_SP_noRel = {'Subject':'#008CFF','Predicate':'#E02D00','Multif_subj':'#01FCF4'}
     __color_SP_noRel_Text = {'Subject':'#FFFFFF','Predicate':'#FFFFFF','Multif_subj':'#000000'}
     
-    __color_SP_Rel = {'Subject_noRel':'#4891FF','Predicate_noRel':'#FF0000','Multif_subj_noRel':'#FFC157'
-                     ,'Subject_Rel':'#0008F5','Predicate_Rel':'#BD0000','Multif_subj_Rel':'#BD6200'}
+    __color_SP_Rel = {'Subject_noRel':'#4891FF','Predicate_noRel':'#FF0000','Multif_subj_noRel':'#01FCF4'
+                     ,'Subject_Rel':'#0008F5','Predicate_Rel':'#BD0000','Multif_subj_Rel':'#00DDFF'}
     __color_SP_Rel_Text = {'Subject_noRel':'#000000','Predicate_noRel':'#FFFFFF','Multif_subj_noRel':'#000000'
-                     ,'Subject_Rel':'#FFFFFF','Predicate_Rel':'#FFFFFF','Multif_subj_Rel':'#FFFFFF'}
+                     ,'Subject_Rel':'#FFFFFF','Predicate_Rel':'#FFFFFF','Multif_subj_Rel':'#000000'}
     
     __color_PoS ={
         "PROPN": '#B3B3B3',"AUX": '#47CCD3',"VERB": '#FF0000',"PRON": '#0008FF',"NOUN": '#51FF00',
@@ -104,6 +104,10 @@ class DataProvider:
     @staticmethod
     def getPTA_RelSP_Dims():
         return DataProvider.__lst_of_st_pred_Rel
+    
+    @staticmethod
+    def getFVPoDims() -> List[str]:
+        return DataProvider.__lst_of_SPVo
 
     @staticmethod
     def getPTA_NrelSP_Colors():
@@ -136,6 +140,14 @@ class DataProvider:
     @staticmethod
     def getTagColumnNameRel() -> str:
         return 'PS_tagsRel'
+    
+    @staticmethod
+    def getSPVoColumnName() -> str:
+        return 'FVPo'
+    
+    @staticmethod
+    def getContentColumnName() -> str:
+        return 'content'
     
     @staticmethod
     def getTagColumnsLstToMerge() -> List[str]:

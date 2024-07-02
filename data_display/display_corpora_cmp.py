@@ -75,7 +75,7 @@ class ComparativeCorporaSimple:
         gruppedDataDic = {}
         wholeDataDic = {}
         for key in self.__dataDic.keys():
-            tmpDic = DataFilter(data=self.__dataDic[key],config=self.__cf,prefix='1_').getDataDict()
+            tmpDic = DataFilter(data=self.__dataDic[key][0],config=self.__cf,prefix=self.__dataDic[key][2]).getDataDict()
             if len(tmpDic) > 0:
                 gruppedDataDic[key] = tmpDic['gruppedAll']
                 wholeDataDic[key] = tmpDic['wholeAll']

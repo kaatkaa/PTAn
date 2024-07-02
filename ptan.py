@@ -50,10 +50,12 @@ __AnConfig = {
     'categoriesColumn': '',
     'categoriesLst': DataProvider.getPTA_NrelSP_Dims(),
     'categoriesLstRel': DataProvider.getPTA_RelSP_Dims(),
+    'categoriesLstFVPo': DataProvider.getFVPoDims(),
     # Color palette
     'palette': DataProvider.getPTA_NrelSP_Colors(),
     'text_color': DataProvider.getPTA_NrelSP_ColorsText(),
     # use stopwords interface
+    'content': [DataProvider.getContentColNames()[0]],
     'showStopWordsInterface':False,
     'showStopwords':False,
     'useStopwords':False,

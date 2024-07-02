@@ -84,7 +84,7 @@ class DataFilter:
             self.__outputData = self.__d
 
         if self.__cf['showStopWordsInterface'] and self.__cf['useStopwords'] and len(self.__outputData) > 0:
-            self.__RemoveStopWordsFromDf(self.__outputData, self.__cf['inOutLst'], self.__stop_words_set)
+            self.__RemoveStopWordsFromDf(self.__outputData, self.__cf['content'], self.__stop_words_set)
 
         if self.__cf['imediatePlot']:
             if self.__cf['unitTextOrSpeaker'] == "Text":

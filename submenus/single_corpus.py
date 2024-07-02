@@ -25,7 +25,7 @@ class SingleCorpusMenu:
         #Prefix to distinguish between different data sets
         self.__prefix = prefix
         #loading config file for ethos and sentiment
-        tmp = DataProvider.getPTAnCfgJson()
+        # tmp = DataProvider.getPTAnCfgJson()
 
         self.__ptan_df = pd.DataFrame()
         self.__ptan_old = pd.DataFrame()
@@ -37,16 +37,16 @@ class SingleCorpusMenu:
             st.session_state[self.__prefix + 'Units'] = ""
             # Speaker type: "Text" or "Speaker", default is ""
             st.session_state[self.__prefix + 'unitChoice'] = ""
-        print("Reloaded!!!")
+        # print("Reloaded!!!")
 
     def __checkSessionState(self) -> bool:
         for key in self.__dataDic:
             if self.__prefix + key not in st.session_state:
                 return False
-        if self.__prefix + 'Units' not in st.session_state:
-            return False
-        if self.__prefix + 'unitChoice' not in st.session_state:
-            return False
+        # if self.__prefix + 'Units' not in st.session_state:
+        #     return False
+        # if self.__prefix + 'unitChoice' not in st.session_state:
+        #     return False
         return True
 
     def cleanSelections(self):
@@ -191,8 +191,9 @@ class SingleCorpusMenu:
             )
             st.write("****************************")
             st.subheader("Statictical module")
+            st.write("Distribution")
             module_choice = st.radio("An. Module", \
-                                        ("Distribution",), \
+                                        ("SP","FVPo","SP->FVPo"), \
                                         key=self.__prefix+"post", label_visibility="hidden"
                                     )
         st.markdown("""
@@ -202,9 +203,9 @@ class SingleCorpusMenu:
         }
         </style>
         """,unsafe_allow_html=True)
-        if module_choice == "Distribution":
+        if module_choice == "SP":
             __DistribCfg = {
-                'prefix':'distributions_',
+                'prefix':'distributionsSP_',
                 'imediatePlot': True,
                 'showPercentageNumber': True,
                 'showCategoriesInterface': True,
@@ -230,6 +231,30 @@ class SingleCorpusMenu:
                 Table2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
             with casesTab:
                 Cases2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
+        elif module_choice == "FVPo":
+            __DistribCfg = {
+                'prefix':'distributionsFVPo_',
+                'imediatePlot': True,
+                'showPercentageNumber': True,
+                'showCategoriesInterface': True,
+                'showStopWordsInterface':True
+            }
+            DataProvider.updateGlobalConfig(config=__DistribCfg)
+            st.session_state[st.session_state['cfgId']] = \
+                FilterInterface(config=st.session_state[st.session_state['cfgId']]).getConfig()
+            dataDict = DataFilter(data=self.__ptan_df,config=st.session_state[st.session_state['cfgId']]).getDataDict()
+            #st.write(dataDict)
+            pieTab, barTab, tableTab, casesTab = st.tabs([":pizza: PieChart",":bar_chart: BarChart",":black_square_button: Table",":speech_balloon: Cases"])
+            with pieTab:
+                Piechart2(dataDic=dataDict,config=st.session_state[st.session_state['cfgId']])
+            with barTab:
+                Barchart2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
+            with tableTab:
+                Table2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
+            with casesTab:
+                Cases2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
+        elif module_choice == "SP->FVPo":
+            st.write("Not implemented yet.")
         else:
             raise NotImplementedError("Unsupported option of Analytical module in single_corpus.py .")
         
@@ -238,7 +263,7 @@ class SingleCorpusMenu:
         if len(self.__dataDic) > 0:
             newLst = []
             if st.session_state[st.session_state['cfgId']]['unitTextOrSpeaker'] == "Speaker":
-                if self.__prefix + 'unitSpeakerSel' in st.session_state:
+                if self.__prefix + 'unitSpeakerSel' in st.session_state[st.session_state['cfgId']]:
                     newLst = ['Speaker: '+st.session_state[self.__prefix+'unitSpeakerSel']]
                 else:
                     newLst = ['error']
@@ -260,15 +285,19 @@ class SingleCorpusMenu:
 
     def tab(self):
         def unitUpade():
-            if st.session_state[st.session_state['cfgId']]['unitTextOrSpeaker'] == "Text":
+            st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] = int(
+                not bool(st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'])
+            )
+            if st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] == 1:
+                st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]].unique().tolist()
+                st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerLst'][0]
+            elif st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] == 0:
                 st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = None
                 st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = None
-            elif st.session_state[st.session_state['cfgId']]['unitTextOrSpeaker'] == "Speaker":
-                st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]].unique().tolist()
-                st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel'] = st.selectbox("Choose Speaker: ",
-                    st.session_state[st.session_state['cfgId']]['unitSpeakerLst'],
-                    key=self.__prefix+"Choose_Cmp_Speaker")
-                self.__ptan_df = self.__ptan_df.loc[self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]] == st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel']]
+            else:
+                st.error("Wrong units option: ",st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'],
+                    "Must be Text or Speaker.")
+            self.__ptan_df = self.__ptan_df.loc[self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]] == st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel']]
             self.__ptan_df = self.__ptan_old.copy(deep=True)
             self.__iat_df = self.__iat_old.copy(deep=True)
         st.subheader("Choose Corpora: ")
