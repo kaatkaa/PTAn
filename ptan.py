@@ -39,6 +39,7 @@ __AnConfig = {
     'unitTextOrSpeaker': "Text",
     'unitSpeakerLst': None,
     'unitSpeakerSel': None,
+    'unitSpeakerSelOld': None,
     #Number or percentage
     'showPercentageNumber': False,
     'unitPercentNumberIndex': 0,

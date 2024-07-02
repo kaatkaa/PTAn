@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from typing import Tuple, List, Dict, Any
+import ast
 
 import sys
 sys.path.insert(0,"..")
@@ -12,7 +13,7 @@ from graphic_components.table import Table2
 from graphic_components.textAnalysis import Cases2
 from config.config_data_colector import DataProvider
 from submenus.tweaker import st_tweaker
-from st_ant_tree import st_ant_tree
+# from st_ant_tree import st_ant_tree
 from streamlit_modal import Modal
 
 class SingleCorpusMenu:
@@ -168,10 +169,13 @@ class SingleCorpusMenu:
             )
             if st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] == 1:
                 st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]].unique().tolist()
-                st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerLst'][0]
+                if st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] == None:
+                    st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerLst'][0]
+                elif st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] == "Text":
+                    st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerSelOld']
             elif st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] == 0:
                 st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = None
-                st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = None
+                st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = "Text"
             else:
                 st.error("Wrong units option: ",st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'],
                     "Must be Text or Speaker.")
@@ -243,7 +247,6 @@ class SingleCorpusMenu:
             st.session_state[st.session_state['cfgId']] = \
                 FilterInterface(config=st.session_state[st.session_state['cfgId']]).getConfig()
             dataDict = DataFilter(data=self.__ptan_df,config=st.session_state[st.session_state['cfgId']]).getDataDict()
-            #st.write(dataDict)
             pieTab, barTab, tableTab, casesTab = st.tabs([":pizza: PieChart",":bar_chart: BarChart",":black_square_button: Table",":speech_balloon: Cases"])
             with pieTab:
                 Piechart2(dataDic=dataDict,config=st.session_state[st.session_state['cfgId']])
@@ -285,21 +288,22 @@ class SingleCorpusMenu:
 
     def tab(self):
         def unitUpade():
+            # to be adapted
             st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] = int(
                 not bool(st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'])
             )
             if st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] == 1:
                 st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]].unique().tolist()
-                st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerLst'][0]
+                if st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] == None:
+                    st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerLst'][0]
+                self.__ptan_df = self.__ptan_df.loc[self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]] == st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel']]
             elif st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] == 0:
-                st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = None
-                st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = None
+                pass
             else:
                 st.error("Wrong units option: ",st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'],
                     "Must be Text or Speaker.")
-            self.__ptan_df = self.__ptan_df.loc[self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]] == st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel']]
-            self.__ptan_df = self.__ptan_old.copy(deep=True)
-            self.__iat_df = self.__iat_old.copy(deep=True)
+            # self.__ptan_df = self.__ptan_old.copy(deep=True)
+            # self.__iat_df = self.__iat_old.copy(deep=True)
         st.subheader("Choose Corpora: ")
         self.__corporaPickerChckBox()
         if len(self.__ptan_old) > 0:

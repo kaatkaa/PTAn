@@ -33,7 +33,6 @@ class FilterInterface:
         return self.__cf
 
     def __filterInterface(self) -> Tuple[Any, list[str]]:
-
         col_radio1, col_radio2, col_user_sel= st.columns(3)
 
         if self.__cf['showPercentageNumber']:
@@ -51,7 +50,6 @@ class FilterInterface:
                 with col_user_sel:
                     st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.selectbox("Pick user to analyse: ",
                         st.session_state[st.session_state['cfgId']]['unitSpeakerLst'],
-                        index = 0,
                         key="Speaker_mode_sel"                                                                  
                     )
 
