@@ -197,7 +197,7 @@ class SingleCorpusMenu:
             st.subheader("Statictical module")
             st.write("Distribution")
             module_choice = st.radio("An. Module", \
-                                        ("SP","FVPo","SP->FVPo"), \
+                                        ("SP",), \
                                         key=self.__prefix+"post", label_visibility="hidden"
                                     )
         st.markdown("""

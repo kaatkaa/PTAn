@@ -124,15 +124,15 @@ with st.sidebar:
     __single_corpora_menu = __SingleCorporaMenuLoader(dataDic=dataDic, submenu_prefix="0_")
     __cmp_corpora_menu = __ComparativeCorporaMenuLoader(dataDic=dataDic)
     st.title("Contents")
-    contents_radio = st.radio("Choose: ", ("Main Page", "Single Corpus Analysis", "Comparative Corpora Analysis"),label_visibility='collapsed')
+    contents_radio = st.radio("Choose: ", ("Main Page", "Single Corpus Analysis"),label_visibility='collapsed')
 
 if contents_radio == "Main Page":
     __MainPage()
 elif contents_radio == "Single Corpus Analysis":
     __single_corpora_menu.sidebar()
-elif contents_radio == "Comparative Corpora Analysis":
-    with st.sidebar:
-        st.button("Clear All Tabs",key="tabs_clear",on_click=__cmp_corpora_menu.clearTabsSelections)
-    __cmp_corpora_menu.display()
+# elif contents_radio == "Comparative Corpora Analysis":
+#     with st.sidebar:
+#         st.button("Clear All Tabs",key="tabs_clear",on_click=__cmp_corpora_menu.clearTabsSelections)
+#     __cmp_corpora_menu.display()
 else:
     st.error("Wrong option of main sidemenu radiobitton.")
