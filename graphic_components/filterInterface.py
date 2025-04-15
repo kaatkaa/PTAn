@@ -75,7 +75,8 @@ class FilterInterface:
         with col:
             display_complexity = st.radio("Choose rel/non_rel subject / predicate",
                 ("non Relational",
-                    "Relational"),
+                    "Relational",
+                ),
                 index=self.__cf['categoryIndex'],                                              
                 key=self.__cf['prefix']+"_Rephrase_4-6cat"+str(self.__keyCtr))
             self.__keyCtr += 1
@@ -103,6 +104,18 @@ class FilterInterface:
             self.__cf['categoriesColumn'] = DataProvider.getTagColumnNameRel()
             self.__cf['palette'] = DataProvider.getPTA_RelSP_Colors()
             self.__cf['text_color'] = DataProvider.getPTA_RelSP_ColorsText()
+        # elif display_complexity == 'FVP':
+        #     self.__cf['categoryIndex'] = 2
+        #     # sortDict = {key: i for i, key in enumerate(DataProvider.getDynRephDimentionsWS())}
+        #     self.__cf['categories'] = st.multiselect("Select FVPo tags: ", 
+        #                                 sorted(["no_relation","['STATEMENT_OF_VALUE']","['STATEMENT_OF_FACT']","['STATEMENT_OF_POLICY']"]), 
+        #                                 ["no_relation","['STATEMENT_OF_VALUE']","['STATEMENT_OF_FACT']","['STATEMENT_OF_POLICY']"],
+        #                                 key = self.__cf['prefix']+"_multi_selRel"+str(self.__keyCtr))
+        #     self.__keyCtr += 1
+        #     # self.__cf['categoriesLstRel'] = sorted(self.__cf['categoriesLstWS'], key=lambda d: sortDict[d])
+        #     self.__cf['categoriesColumn'] = DataProvider.getFVPoColumnName()
+        #     self.__cf['palette'] = DataProvider.getFVPoColors()
+        #     self.__cf['text_color'] = DataProvider.getFVPoColors()
         else:
             st.error("Oprion not implemented in __filterInterface, class: WordCloudOfEmotions")
 

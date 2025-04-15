@@ -12,7 +12,8 @@ pd.set_option("max_colwidth", 300)
 sns.set_theme(style="whitegrid")
 plt.style.use("seaborn-talk")
 
-__AnConfigId = "DynRephAnCfgId"
+#__AnConfigId = "DynRephAnCfgId"
+__AnConfigId = "PTAnCfgId"
 __AnConfig = {
     'prefix':'no_prefix_set_',
     # imediatePlot - set to True if plotting single corpora charts 
@@ -86,9 +87,9 @@ def __load_data(dir_address: str) -> dict[str : pd.DataFrame()]:
 # ******************* multi pages functions **************************************
 
 def __MainPage():
-    st.title("Periodic Table of Arguments analytic")
+    st.title("Analytic Technology")
     DataProvider.addSpacelines(2)
-    st.write("PTAn_ver_0.1")
+    st.write("PTAn_ver_0.1a")
     with st.expander("Read abstract"):
         DataProvider.addSpacelines(1)
         st.write("""

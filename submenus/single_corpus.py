@@ -109,9 +109,10 @@ class SingleCorpusMenu:
                 self.__ptan_df[colsToMerge].apply(lambda x: logicFunc(x[colsToMerge[0]], x[colsToMerge[1]], x[colsToMerge[2]]), axis=1)
             self.__ptan_df[DataProvider.getTagColumnNameRel()] = \
                 self.__ptan_df[colsRel].apply(lambda x: logicFuncRel(x[colsRel[0]], x[colsRel[1]], x[colsRel[2]], x[colsRel[3]]), axis=1)
+                
         self.__iat_df = prepareDf(iat_dfLst)
         self.__ptan_old = self.__ptan_df.copy(deep=True)
-        self.__iat_old = self.__iat_df.copy(deep=True)
+        #self.__iat_old = self.__iat_df.copy(deep=True)
 
     def __update_block(self, name: str):
         for key in self.__dataDic:
@@ -181,7 +182,7 @@ class SingleCorpusMenu:
                     "Must be Text or Speaker.")
             
         with st.sidebar:
-            st.subheader("Choose Corpora: ")           
+            st.subheader("Choose Corpora: ")
             st.button("Clean selection",key=self.__prefix+"clear_corpo_button",on_click=self.cleanSelections)
             self.__corporaPickerChckBox()
             st.write("****************************")
@@ -213,7 +214,7 @@ class SingleCorpusMenu:
                 'imediatePlot': True,
                 'showPercentageNumber': True,
                 'showCategoriesInterface': True,
-                'showStopWordsInterface':True
+                'showStopWordsInterface':False
             }
             DataProvider.updateGlobalConfig(config=__DistribCfg)
             if SingleCorpusMenu.__debug:
@@ -237,11 +238,16 @@ class SingleCorpusMenu:
                 Cases2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
         elif module_choice == "FVPo":
             __DistribCfg = {
+                'categoryIndex': 1,
+                'categories': DataProvider.getFVPoDims(),
+                'categoriesColumn': DataProvider.getFVPoColumnName(),
+                'palette': DataProvider.getFVPoColors(),
+                'text_color': DataProvider.getFVPoColors(),
                 'prefix':'distributionsFVPo_',
                 'imediatePlot': True,
                 'showPercentageNumber': True,
-                'showCategoriesInterface': True,
-                'showStopWordsInterface':True
+                'showCategoriesInterface': False,
+                'showStopWordsInterface':False,
             }
             DataProvider.updateGlobalConfig(config=__DistribCfg)
             st.session_state[st.session_state['cfgId']] = \

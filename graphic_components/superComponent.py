@@ -26,6 +26,7 @@ class SuperChartComponent(dataHandlerDisplayInterface):
         self.__data = {}
         if self._cf['imediatePlot']:
             for key in dataDic.keys():
+                #print(key)
                 if not key.startswith("whole"):
                     title = re.sub("gruppedAll|grupped","",key)
                     self.dataDisplay(dataDic[key],title)

@@ -16,7 +16,7 @@
         "anName": "PTAn Statements",
         "categoriesInterfaceTitle": "All vs Relation/NoRelation",
         "Wordcloud_filterInterface": "Choose statement types...",
-        "colName": ["predicate","subject","multif_subj"],
+        "colName": ["relation"],
         "colNameWS": ["predicate","subject","multif_subj"]
     }
 }
