@@ -49,19 +49,20 @@ class Barchart2(SuperChartComponent):
             return None
 
     def dataDisplay(self, data: Any, t: str) -> Any:
-        fig = self.getChartObj(data, t)
-        fn = "BarChart_"+"_"+t
-        buf = io.BytesIO()
-        fig.savefig(buf, format="png", dpi=300)
-        left_co, cent_co, right_co = st.columns([1,2,1])
-        with cent_co:
-            st.image(buf)
-        with left_co:
-            btn = st.download_button(
-                label="Download as PNG",
-                data=buf,
-                file_name=fn,
-                mime="image/png")
+        if len(data) > 0:
+            fig = self.getChartObj(data, t)
+            fn = "BarChart_"+"_"+t
+            buf = io.BytesIO()
+            fig.savefig(buf, format="png", dpi=300)
+            left_co, cent_co, right_co = st.columns([1,2,1])
+            with cent_co:
+                st.image(buf)
+            with left_co:
+                btn = st.download_button(
+                    label="Download as PNG",
+                    data=buf,
+                    file_name=fn,
+                    mime="image/png")
         #st.pyplot(fig=fig.get_figure(), config=DataProvider.getSaveConfig())
         #fig.containers.pop()
         #fig.cla()

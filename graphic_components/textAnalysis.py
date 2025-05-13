@@ -31,6 +31,7 @@ class Cases2(SuperTextComponent):
         return make_pretty(data.style)
 
     def dataDisplay(self, df: Any, title: str):
-        stylesed = self.getTextObj(df,title)
-        #st.dataframe(stylesed, height=800, column_config={self._cf['categoriesColumn']: None})
-        st.table(stylesed)
+        if len(df) > 0:
+            stylesed = self.getTextObj(df,title)
+            #st.dataframe(stylesed, height=800, column_config={self._cf['categoriesColumn']: None})
+            st.table(stylesed)

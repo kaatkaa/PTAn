@@ -61,5 +61,6 @@ class Piechart2(SuperChartComponent):
         return fig
         
     def dataDisplay(self, data: Any, t: str) -> None:
-        fig = self.getChartObj(data, t)
-        st.plotly_chart(fig, config=DataProvider.getSaveConfig())            
+        if len(data) > 0:
+            fig = self.getChartObj(data, t)
+            st.plotly_chart(fig, config=DataProvider.getSaveConfig())            
