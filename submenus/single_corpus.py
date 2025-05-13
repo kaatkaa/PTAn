@@ -109,6 +109,14 @@ class SingleCorpusMenu:
                     return "??predicate??" + " " + args[2]
             else:
                 return "£§£====§§"
+            
+        def subjectAdder(*args) -> str:
+            if args[0] == 0:
+                if args[1] not in subjectDict:
+                    return 1
+                else:
+                    return 0
+            return 0
 
         ptan_dfLst = []
         iat_dfLst = []
@@ -129,6 +137,9 @@ class SingleCorpusMenu:
             self.__ptanStatements_df[DataProvider.getStatementName()] = \
                 self.__ptan_df[["Predicate", "Links", "content"]].apply(lambda x: concattContents(x["Predicate"], x["Links"], x["content"]), axis=1)
             self.__ptanStatements_df = self.__ptanStatements_df[self.__ptanStatements_df[DataProvider.getStatementName()] != "£§£====§§"]
+            self.__ptan_df['xxx'] = self.__ptan_df[["Predicate", "mid"]].apply(lambda x: subjectAdder(x["Predicate"], x["mid"]), axis=1)
+            self.__ptan_df[DataProvider.getStatementName()] = "??Subject?? " + self.__ptan_df['content'] 
+            self.__ptanStatements_df = pd.concat([self.__ptanStatements_df, self.__ptan_df.loc[self.__ptan_df['xxx'] == 1]])
                 
         self.__iat_df = prepareDf(iat_dfLst)
         self.__ptan_old = self.__ptan_df.copy(deep=True)
@@ -292,99 +303,41 @@ class SingleCorpusMenu:
             with casesTab:
                 Cases2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
         elif module_choice == "SP->FVPo":
-            __DistribCfg = {
-                'prefix':'distributionsPred-SPVo_',
-                'categoryIndex': 0,
-                # 'categories': DataProvider.getFVPoDims(),
-                'categoriesLst': DataProvider.getFVPoDims(),
-                'categoriesColumn': DataProvider.getFVPoColumnName(),
-                'palette': DataProvider.getFVPoColors(),
-                'text_color': DataProvider.getFVPoTextColors(),
-                'imediatePlot': True,
-                'showPercentageNumber': True,
-                'showCategoriesInterface': True,
-                'showRelationalRadiobutton': False,
-                'showStopWordsInterface':False,
-                'textColumnToShow': DataProvider.getStatementName(),
-            }
-            DataProvider.updateGlobalConfig(config=__DistribCfg)
-            st.session_state[st.session_state['cfgId']] = \
-                FilterInterface(config=st.session_state[st.session_state['cfgId']]).getConfig()
-            tmpDf = self.__ptanStatements_df.copy(deep=True)
-            tmpDf = tmpDf.loc[tmpDf['Predicate'] == 1]
-            dataDict = DataFilter(data=tmpDf,config=st.session_state[st.session_state['cfgId']]).getDataDict()
-            pieTab, barTab, tableTab, casesTab = st.tabs([":pizza: PieChart",":bar_chart: BarChart",":black_square_button: Table",":speech_balloon: Cases"])
-            st.header("Predicates derived statements")
-            with pieTab:
-                Piechart2(dataDic=dataDict,config=st.session_state[st.session_state['cfgId']])
-            with barTab:
-                Barchart2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
-            with tableTab:
-                Table2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
-            with casesTab:
-                Cases2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
-            __DistribCfg = {
-                'prefix':'distributionsSubject-SPVo_',
-                'categoryIndex': 0,
-                # 'categories': DataProvider.getFVPoDims(),
-                'categoriesLst': DataProvider.getFVPoDims(),
-                'categoriesColumn': DataProvider.getFVPoColumnName(),
-                'palette': DataProvider.getFVPoColors(),
-                'text_color': DataProvider.getFVPoTextColors(),
-                'imediatePlot': True,
-                'showPercentageNumber': True,
-                'showCategoriesInterface': True,
-                'showRelationalRadiobutton': False,
-                'showStopWordsInterface':False,
-                'textColumnToShow': DataProvider.getStatementName(),
-            }
-            DataProvider.updateGlobalConfig(config=__DistribCfg)
-            st.session_state[st.session_state['cfgId']] = \
-                FilterInterface(config=st.session_state[st.session_state['cfgId']]).getConfig()
-            tmpDf = self.__ptanStatements_df.copy(deep=True)
-            tmpDf = tmpDf.loc[tmpDf['Subject'] == 1]
-            dataDict = DataFilter(data=tmpDf,config=st.session_state[st.session_state['cfgId']]).getDataDict()
-            pieTab, barTab, tableTab, casesTab = st.tabs([":pizza: PieChart",":bar_chart: BarChart",":black_square_button: Table",":speech_balloon: Cases"])
-            st.header("Subject derived statements")
-            with pieTab:
-                Piechart2(dataDic=dataDict,config=st.session_state[st.session_state['cfgId']])
-            with barTab:
-                Barchart2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
-            with tableTab:
-                Table2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
-            with casesTab:
-                Cases2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
-            __DistribCfg = {
-                'prefix':'distributionsImplicitSubject-SPVo_',
-                'categoryIndex': 0,
-                # 'categories': DataProvider.getFVPoDims(),
-                'categoriesLst': DataProvider.getFVPoDims(),
-                'categoriesColumn': DataProvider.getFVPoColumnName(),
-                'palette': DataProvider.getFVPoColors(),
-                'text_color': DataProvider.getFVPoTextColors(),
-                'imediatePlot': True,
-                'showPercentageNumber': True,
-                'showCategoriesInterface': True,
-                'showRelationalRadiobutton': False,
-                'showStopWordsInterface':False,
-                'textColumnToShow': DataProvider.getStatementName(),
-            }
-            DataProvider.updateGlobalConfig(config=__DistribCfg)
-            st.session_state[st.session_state['cfgId']] = \
-                FilterInterface(config=st.session_state[st.session_state['cfgId']]).getConfig()
-            tmpDf = self.__ptanStatements_df.copy(deep=True)
-            tmpDf = tmpDf.loc[tmpDf['ImplicitSubject'] == 1]
-            dataDict = DataFilter(data=tmpDf,config=st.session_state[st.session_state['cfgId']]).getDataDict()
-            pieTab, barTab, tableTab, casesTab = st.tabs([":pizza: PieChart",":bar_chart: BarChart",":black_square_button: Table",":speech_balloon: Cases"])
-            st.header("Implicit Subject derived statements")
-            with pieTab:
-                Piechart2(dataDic=dataDict,config=st.session_state[st.session_state['cfgId']])
-            with barTab:
-                Barchart2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
-            with tableTab:
-                Table2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
-            with casesTab:
-                Cases2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
+            prefixesLst = ["distributionsPred-SPVo_","distributionsSubject-SPVo_","distributionsImplicitSubject-SPVo_"]
+            SPISlst = DataProvider.getPTA_NrelSP_Dims()
+            descLst = ["Predicates derived statements","Subject derived statements","Implicit Subject derived statements"]
+            for i in range(len(prefixesLst)):
+                __DistribCfg = {
+                    'prefix':prefixesLst[i],
+                    'categoryIndex': 0,
+                    # 'categories': DataProvider.getFVPoDims(),
+                    'categoriesLst': DataProvider.getFVPoDims(),
+                    'categoriesColumn': DataProvider.getFVPoColumnName(),
+                    'palette': DataProvider.getFVPoColors(),
+                    'text_color': DataProvider.getFVPoTextColors(),
+                    'imediatePlot': True,
+                    'showPercentageNumber': True,
+                    'showCategoriesInterface': True,
+                    'showRelationalRadiobutton': False,
+                    'showStopWordsInterface':False,
+                    'textColumnToShow': DataProvider.getStatementName(),
+                }
+                DataProvider.updateGlobalConfig(config=__DistribCfg)
+                st.session_state[st.session_state['cfgId']] = \
+                    FilterInterface(config=st.session_state[st.session_state['cfgId']]).getConfig()
+                tmpDf = self.__ptanStatements_df.copy(deep=True)
+                tmpDf = tmpDf.loc[tmpDf[SPISlst[i]] == 1]
+                dataDict = DataFilter(data=tmpDf,config=st.session_state[st.session_state['cfgId']]).getDataDict()
+                pieTab, barTab, tableTab, casesTab = st.tabs([":pizza: PieChart",":bar_chart: BarChart",":black_square_button: Table",":speech_balloon: Cases"])
+                st.header(descLst[i])
+                with pieTab:
+                    Piechart2(dataDic=dataDict,config=st.session_state[st.session_state['cfgId']])
+                with barTab:
+                    Barchart2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
+                with tableTab:
+                    Table2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
+                with casesTab:
+                    Cases2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
         else:
             raise NotImplementedError("Unsupported option of Analytical module in single_corpus.py .")
         

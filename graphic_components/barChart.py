@@ -62,6 +62,7 @@ class Barchart2(SuperChartComponent):
                     label="Download as PNG",
                     data=buf,
                     file_name=fn,
+                    key=self._cf['prefix']+"ptn",
                     mime="image/png")
         #st.pyplot(fig=fig.get_figure(), config=DataProvider.getSaveConfig())
         #fig.containers.pop()

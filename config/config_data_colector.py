@@ -15,7 +15,7 @@ class DataProvider:
     ]
 
     __PTAn_file = 'config/PTAnConfig.json'
-    __lst_of_st_pred_NoRel = ['Subject', 'Predicate', 'ImplicitSubject']
+    __lst_of_st_pred_NoRel = ['Predicate', 'Subject', 'ImplicitSubject']
     __lst_of_st_pred_Rel = ['S_noRel', 'P_noRel', 'IS_noRel','S_Rel', 'P_Rel', 'IS_Rel']
     __lst_of_SPVo = ["VALUE","FACT","POLICY",'no_relation','relation']
 

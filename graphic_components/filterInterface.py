@@ -50,7 +50,7 @@ class FilterInterface:
                 with col_user_sel:
                     st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.selectbox("Pick user to analyse: ",
                         st.session_state[st.session_state['cfgId']]['unitSpeakerLst'],
-                        key="Speaker_mode_sel"                                                                  
+                        key=self.__cf['prefix']+"Speaker_mode_sel"                                                                  
                     )
 
         if self.__cf['showStopWordsInterface']:
