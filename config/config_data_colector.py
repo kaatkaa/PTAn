@@ -17,7 +17,7 @@ class DataProvider:
     __PTAn_file = 'config/PTAnConfig.json'
     __lst_of_st_pred_NoRel = ['Subject', 'Predicate', 'ImplicitSubject']
     __lst_of_st_pred_Rel = ['S_noRel', 'P_noRel', 'IS_noRel','S_Rel', 'P_Rel', 'IS_Rel']
-    __lst_of_SPVo = ["VALUE","FACT","POLICY",'no_relation']
+    __lst_of_SPVo = ["VALUE","FACT","POLICY",'no_relation','relation']
 
     __color_SP_noRel = {'Subject':'#008CFF','Predicate':'#E02D00','ImplicitSubject':'#01FCF4'}
     __color_SP_noRel_Text = {'Subject':'#FFFFFF','Predicate':'#FFFFFF','ImplicitSubject':'#000000'}
@@ -137,11 +137,11 @@ class DataProvider:
         return ['speaker','speaker_conclusion','speaker_premise']
 
     @staticmethod
-    def getTagColumnName() -> str:
+    def getSubPredColumnName() -> str:
         return 'PS_tags'
     
     @staticmethod
-    def getTagColumnNameRel() -> str:
+    def getSubPredColumnNameRel() -> str:
         return 'PS_tagsRel'
     
     

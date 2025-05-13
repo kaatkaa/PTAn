@@ -52,11 +52,15 @@ __AnConfig = {
     # If None, will initialize empty and return None until the user selects an option. 
     # Defaults to 0 (the first option).
     'categoryIndex': 0,
+    # Shows "relational" - "non relational" radiobutton in categories interface
+    'showRelationalRadiobutton': False,
     'categoriesColumn': '',
     # in multiselect option
     'categoriesLst': DataProvider.getPTA_NrelSP_Dims(),
     'categoriesLstRel': DataProvider.getPTA_RelSP_Dims(),
     'categoriesLstFVPo': DataProvider.getFVPoDims(),
+    # text to display
+    'textColumnToShow': DataProvider.getContentColumnName(),
     # Color palette
     'palette': DataProvider.getPTA_NrelSP_Colors(),
     'text_color': DataProvider.getPTA_NrelSP_ColorsText(),

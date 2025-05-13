@@ -77,9 +77,10 @@ class DataFilter:
     def __filterInterface(self) -> Tuple[Any, list[str]]:        
         if self.__cf['showCategoriesInterface'] and len(self.__outputData) > 0:
             if self.__cf['categoryIndex'] == 0:
+                #print("self.__cf['categoriesColumn']=",self.__cf['categoriesColumn']," self.__cf['categoriesLst']=",self.__cf['categoriesLst'])
                 self.__outputData = self.__outputData.loc[self.__outputData[self.__cf['categoriesColumn']].isin(self.__cf['categoriesLst'])]
             elif self.__cf['categoryIndex'] == 1:
-                print("self.__cf['categoriesColumnRel']=",self.__cf['categoriesColumnRel'],"self.__cf['categoriesLstRel']=",self.__cf['categoriesLstRel'])
+                #print("self.__cf['categoriesColumnRel']=",self.__cf['categoriesColumnRel'],"self.__cf['categoriesLstRel']=",)
                 self.__outputData = self.__outputData.loc[self.__outputData[self.__cf['categoriesColumnRel']].isin(self.__cf['categoriesLstRel'])]
         else:
             self.__outputData = self.__d
@@ -98,9 +99,11 @@ class DataFilter:
 
             self.__outDict["whole Text"] = self.__outputData
             if self.__cf['categoryIndex'] == 0:
-                self.__outDict["grupped Text"] = self.__distributionData(self.__outputData, DataProvider.getTagColumnName())
+                    self.__outDict["grupped Text"] = self.__distributionData(self.__outputData, self.__cf['categoriesColumn'])
+                    #print("self.__outDict=",self.__outDict)
+
             elif self.__cf['categoryIndex'] == 1:
-                self.__outDict["grupped Text"] = self.__distributionData(self.__outputData, DataProvider.getTagColumnNameRel())
+                self.__outDict["grupped Text"] = self.__distributionData(self.__outputData, self.__cf['categoriesColumnRel'])
 
         # else:
         #     if self.__cf['unitTextOrSpeaker'] == "Text":

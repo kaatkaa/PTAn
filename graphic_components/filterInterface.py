@@ -72,52 +72,46 @@ class FilterInterface:
         self.__keyCtr += 1
 
     def __categories(self, col) -> str:
-        with col:
-            display_complexity = st.radio("Choose rel/non_rel subject / predicate",
-                ("non Relational",
-                    "Relational",
-                ),
-                index=self.__cf['categoryIndex'],                                              
-                key=self.__cf['prefix']+"_Rephrase_4-6cat"+str(self.__keyCtr))
-            self.__keyCtr += 1
-        if display_complexity == 'non Relational':
+        if self.__cf['showRelationalRadiobutton']:
+            with col:
+                display_complexity = st.radio("Choose rel/non_rel subject / predicate",
+                    ("non Relational",
+                        "Relational",
+                    ),
+                    index=self.__cf['categoryIndex'],                                              
+                    key=self.__cf['prefix']+"_Rephrase_4-6cat"+str(self.__keyCtr))
+                self.__keyCtr += 1
+            if display_complexity == 'non Relational':
+                self.__cf['categoryIndex'] = 0
+                # sortDict = {key: i for i, key in enumerate(DataProvider.getDynRephDimentions())}
+                self.__cf['categoriesLst'] = st.multiselect("Select non relational tags: ",
+                                            sorted(DataProvider.getPTA_NrelSP_Dims()), 
+                                            self.__cf['categoriesLst'],
+                                            key = self.__cf['prefix']+"_multi_sel"+str(self.__keyCtr))
+                self.__keyCtr += 1
+                self.__cf['categoriesColumn'] = DataProvider.getSubPredColumnName()
+                self.__cf['palette'] = DataProvider.getPTA_NrelSP_Colors()
+                self.__cf['text_color'] = DataProvider.getPTA_NrelSP_ColorsText()
+            elif display_complexity == 'Relational':
+                self.__cf['categoryIndex'] = 1
+                self.__cf['categoriesLstRel'] = st.multiselect("Select relational tags: ", 
+                                            sorted(DataProvider.getPTA_RelSP_Dims()), 
+                                            self.__cf['categoriesLstRel'],
+                                            key = self.__cf['prefix']+"_multi_selRel"+str(self.__keyCtr))
+                self.__keyCtr += 1
+                # self.__cf['categoriesLstRel'] = sorted(self.__cf['categoriesLstWS'], key=lambda d: sortDict[d])
+                self.__cf['categoriesColumn'] = DataProvider.getSubPredColumnNameRel()
+                self.__cf['palette'] = DataProvider.getPTA_RelSP_Colors()
+                self.__cf['text_color'] = DataProvider.getPTA_RelSP_ColorsText()
+        else:
             self.__cf['categoryIndex'] = 0
-            # sortDict = {key: i for i, key in enumerate(DataProvider.getDynRephDimentions())}
-            self.__cf['categoriesLst'] = st.multiselect("Select non relational tags: ",
-                                        sorted(DataProvider.getPTA_NrelSP_Dims()), 
+            self.__cf['categoriesLst'] = st.multiselect("Select VFPo tags: ", 
+                                        sorted(self.__cf['categoriesLst']), 
                                         self.__cf['categoriesLst'],
-                                        key = self.__cf['prefix']+"_multi_sel"+str(self.__keyCtr))
-            self.__keyCtr += 1
-            # self.__cf['categoriesLst'] = sorted(self.__cf['categoriesLst'], key=lambda d: sortDict[d])
-            self.__cf['categoriesColumn'] = DataProvider.getTagColumnName()
-            self.__cf['palette'] = DataProvider.getPTA_NrelSP_Colors()
-            self.__cf['text_color'] = DataProvider.getPTA_NrelSP_ColorsText()
-        elif display_complexity == 'Relational':
-            self.__cf['categoryIndex'] = 1
-            # sortDict = {key: i for i, key in enumerate(DataProvider.getDynRephDimentionsWS())}
-            self.__cf['categoriesLstRel'] = st.multiselect("Select relational tags: ", 
-                                        sorted(DataProvider.getPTA_RelSP_Dims()), 
-                                        self.__cf['categoriesLstRel'],
                                         key = self.__cf['prefix']+"_multi_selRel"+str(self.__keyCtr))
             self.__keyCtr += 1
-            # self.__cf['categoriesLstRel'] = sorted(self.__cf['categoriesLstWS'], key=lambda d: sortDict[d])
-            self.__cf['categoriesColumn'] = DataProvider.getTagColumnNameRel()
-            self.__cf['palette'] = DataProvider.getPTA_RelSP_Colors()
-            self.__cf['text_color'] = DataProvider.getPTA_RelSP_ColorsText()
-        # elif display_complexity == 'FVP':
-        #     self.__cf['categoryIndex'] = 2
-        #     # sortDict = {key: i for i, key in enumerate(DataProvider.getDynRephDimentionsWS())}
-        #     self.__cf['categories'] = st.multiselect("Select FVPo tags: ", 
-        #                                 sorted(["no_relation","['STATEMENT_OF_VALUE']","['STATEMENT_OF_FACT']","['STATEMENT_OF_POLICY']"]), 
-        #                                 ["no_relation","['STATEMENT_OF_VALUE']","['STATEMENT_OF_FACT']","['STATEMENT_OF_POLICY']"],
-        #                                 key = self.__cf['prefix']+"_multi_selRel"+str(self.__keyCtr))
-        #     self.__keyCtr += 1
-        #     # self.__cf['categoriesLstRel'] = sorted(self.__cf['categoriesLstWS'], key=lambda d: sortDict[d])
-        #     self.__cf['categoriesColumn'] = DataProvider.getFVPoColumnName()
-        #     self.__cf['palette'] = DataProvider.getFVPoColors()
-        #     self.__cf['text_color'] = DataProvider.getFVPoColors()
-        else:
-            st.error("Oprion not implemented in __filterInterface, class: WordCloudOfEmotions")
+        # else:
+        #     st.error("Oprion not implemented in __filterInterface, class: WordCloudOfEmotions")
 
     def __stopWords(self):
         col1, col2 = st.columns([2,2])

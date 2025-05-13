@@ -24,7 +24,7 @@ class Cases2(SuperTextComponent):
             styler.set_table_styles(DataProvider.getTableFormat())
             styler.apply(color, axis=1)
             return styler
-        lst = [self._cf['categoriesColumn']] + [DataProvider.getContentColNames()[0]]
+        lst = [self._cf['categoriesColumn']] + [self._cf['textColumnToShow']] + ['mid','Links']
         data = data[lst].sort_values(by=self._cf['categoriesColumn'])
         data.reset_index(drop=True,inplace=True)
         data.index += 1

@@ -121,9 +121,9 @@ class SingleCorpusMenu:
                 
         self.__ptan_df = prepareDf(ptan_dfLst)
         if len(self.__ptan_df) > 0:
-            self.__ptan_df[DataProvider.getTagColumnName()] = \
+            self.__ptan_df[DataProvider.getSubPredColumnName()] = \
                 self.__ptan_df[colsToMerge].apply(lambda x: logicFunc(x[colsToMerge[0]], x[colsToMerge[1]], x[colsToMerge[2]]), axis=1)
-            self.__ptan_df[DataProvider.getTagColumnNameRel()] = \
+            self.__ptan_df[DataProvider.getSubPredColumnNameRel()] = \
                 self.__ptan_df[colsRel].apply(lambda x: logicFuncRel(x[colsRel[0]], x[colsRel[1]], x[colsRel[2]], x[colsRel[3]]), axis=1)
             self.__ptanStatements_df = self.__ptan_df.copy(deep=True)
             self.__ptanStatements_df[DataProvider.getStatementName()] = \
@@ -232,13 +232,15 @@ class SingleCorpusMenu:
             __DistribCfg = {
                 'prefix':'distributionsSP_',
                 'imediatePlot': True,
-                'categoriesColumn': DataProvider.getTagColumnName(),
-                'categoriesColumnRel': DataProvider.getTagColumnNameRel(),
+                'showRelationalRadiobutton': True,
+                'categoriesColumn': DataProvider.getSubPredColumnName(),
+                'categoriesColumnRel': DataProvider.getSubPredColumnNameRel(),
                 'categoriesLst': DataProvider.getPTA_NrelSP_Dims(),
                 'categoriesLstRel': DataProvider.getPTA_RelSP_Dims(),
                 'showPercentageNumber': True,
                 'showCategoriesInterface': True,
-                'showStopWordsInterface':False
+                'showStopWordsInterface':False,
+                'textColumnToShow': DataProvider.getContentColumnName()
             }
             DataProvider.updateGlobalConfig(config=__DistribCfg)
             if SingleCorpusMenu.__debug:
@@ -262,21 +264,24 @@ class SingleCorpusMenu:
                 Cases2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
         elif module_choice == "FVPo":
             __DistribCfg = {
-                'categoryIndex': 1,
-                'categories': DataProvider.getFVPoDims(),
+                'prefix':'distributionsSPVo_',
+                'categoryIndex': 0,
+                # 'categories': DataProvider.getFVPoDims(),
+                'categoriesLst': DataProvider.getFVPoDims(),
                 'categoriesColumn': DataProvider.getFVPoColumnName(),
                 'palette': DataProvider.getFVPoColors(),
                 'text_color': DataProvider.getFVPoTextColors(),
-                'prefix':'distributionsFVPo_',
                 'imediatePlot': True,
                 'showPercentageNumber': True,
-                'showCategoriesInterface': False,
+                'showCategoriesInterface': True,
+                'showRelationalRadiobutton': False,
                 'showStopWordsInterface':False,
+                'textColumnToShow': DataProvider.getStatementName(),
             }
             DataProvider.updateGlobalConfig(config=__DistribCfg)
             st.session_state[st.session_state['cfgId']] = \
                 FilterInterface(config=st.session_state[st.session_state['cfgId']]).getConfig()
-            dataDict = DataFilter(data=self.__ptan_df,config=st.session_state[st.session_state['cfgId']]).getDataDict()
+            dataDict = DataFilter(data=self.__ptanStatements_df,config=st.session_state[st.session_state['cfgId']]).getDataDict()
             pieTab, barTab, tableTab, casesTab = st.tabs([":pizza: PieChart",":bar_chart: BarChart",":black_square_button: Table",":speech_balloon: Cases"])
             with pieTab:
                 Piechart2(dataDic=dataDict,config=st.session_state[st.session_state['cfgId']])
@@ -289,6 +294,34 @@ class SingleCorpusMenu:
         elif module_choice == "SP->FVPo":
             st.write("Not implemented yet.")
         else:
+            __DistribCfg = {
+                'prefix':'distributionsPred-SPVo_',
+                'categoryIndex': 0,
+                # 'categories': DataProvider.getFVPoDims(),
+                'categoriesLst': DataProvider.getFVPoDims(),
+                'categoriesColumn': DataProvider.getFVPoColumnName(),
+                'palette': DataProvider.getFVPoColors(),
+                'text_color': DataProvider.getFVPoTextColors(),
+                'imediatePlot': True,
+                'showPercentageNumber': True,
+                'showCategoriesInterface': True,
+                'showRelationalRadiobutton': False,
+                'showStopWordsInterface':False,
+                'textColumnToShow': DataProvider.getStatementName(),
+            }
+            DataProvider.updateGlobalConfig(config=__DistribCfg)
+            st.session_state[st.session_state['cfgId']] = \
+                FilterInterface(config=st.session_state[st.session_state['cfgId']]).getConfig()
+            dataDict = DataFilter(data=self.__ptanStatements_df,config=st.session_state[st.session_state['cfgId']]).getDataDict()
+            pieTab, barTab, tableTab, casesTab = st.tabs([":pizza: PieChart",":bar_chart: BarChart",":black_square_button: Table",":speech_balloon: Cases"])
+            with pieTab:
+                Piechart2(dataDic=dataDict,config=st.session_state[st.session_state['cfgId']])
+            with barTab:
+                Barchart2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
+            with tableTab:
+                Table2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
+            with casesTab:
+                Cases2(dataDic=dataDict, config=st.session_state[st.session_state['cfgId']])
             raise NotImplementedError("Unsupported option of Analytical module in single_corpus.py .")
         
     #Returns criteria to which data is selected
