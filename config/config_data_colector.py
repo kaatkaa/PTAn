@@ -15,37 +15,38 @@ class DataProvider:
     ]
 
     __PTAn_file = 'config/PTAnConfig.json'
-    __lst_of_st_pred_NoRel = ['Subject', 'Predicate', 'Multif_subj']
-    __lst_of_st_pred_Rel = ['Subject_noRel', 'Predicate_noRel', 'Multif_subj_noRel','Subject_Rel', 'Predicate_Rel', 'Multif_subj_Rel']
-    __lst_of_SPVo = ["['STATEMENT_OF_VALUE']","['STATEMENT_OF_FACT']","['STATEMENT_OF_POLICY']",'no_relation']
+    __lst_of_st_pred_NoRel = ['Subject', 'Predicate', 'ImplicitSubject']
+    __lst_of_st_pred_Rel = ['S_noRel', 'P_noRel', 'IS_noRel','S_Rel', 'P_Rel', 'IS_Rel']
+    __lst_of_SPVo = ["VALUE","FACT","POLICY",'no_relation']
 
-    __color_SP_noRel = {'Subject':'#008CFF','Predicate':'#E02D00','Multif_subj':'#01FCF4'}
-    __color_SP_noRel_Text = {'Subject':'#FFFFFF','Predicate':'#FFFFFF','Multif_subj':'#000000'}
+    __color_SP_noRel = {'Subject':'#008CFF','Predicate':'#E02D00','ImplicitSubject':'#01FCF4'}
+    __color_SP_noRel_Text = {'Subject':'#FFFFFF','Predicate':'#FFFFFF','ImplicitSubject':'#000000'}
     
-    __color_SP_Rel = {'Subject_noRel':'#4891FF','Predicate_noRel':'#FF0000','Multif_subj_noRel':'#01FCF4'
-                     ,'Subject_Rel':'#0008F5','Predicate_Rel':'#BD0000','Multif_subj_Rel':'#00DDFF'}
-    __color_SP_Rel_Text = {'Subject_noRel':'#000000','Predicate_noRel':'#FFFFFF','Multif_subj_noRel':'#000000'
-                     ,'Subject_Rel':'#FFFFFF','Predicate_Rel':'#FFFFFF','Multif_subj_Rel':'#000000'}
+    __color_SP_Rel = {'S_noRel':'#4891FF','P_noRel':'#FF0000','IS_noRel':'#01FCF4'
+                     ,'S_Rel':'#0008F5','P_Rel':'#BD0000','IS_Rel':'#00DDFF'}
+    __color_SP_Rel_Text = {'S_noRel':'#000000','P_noRel':'#FFFFFF','IS_noRel':'#000000'
+                     ,'S_Rel':'#FFFFFF','P_Rel':'#FFFFFF','IS_Rel':'#000000'}
     
-    __color_FVP = {"no_relation":'#0008F5',"['STATEMENT_OF_VALUE']":'#FF0000',"['STATEMENT_OF_FACT']":'#f5aa60',"['STATEMENT_OF_POLICY']":'#51FF00'}
+    __color_FVP = {"relation":'#00F1F5',"no_relation":'#0008F5',"VALUE":'#FF0000',"FACT":'#f5aa60',"POLICY":'#51FF00'}
+    __color_FVP_text = {"relation":'#000000',"no_relation":'#FFFFFF',"VALUE":'#FFFFFF',"FACT":'#000000',"POLICY":'#000000'}
     
-    __color_PoS ={
-        "PROPN": '#B3B3B3',"AUX": '#47CCD3',"VERB": '#FF0000',"PRON": '#0008FF',"NOUN": '#51FF00',
-        "CCONJ": '#dcb559',"ADP": '#f5bc6b',"DET": '#f5aa60',"PART": '#f39659',"ADJ": '#FF00FB',
-        "NUM": '#ec6e55',"PUNCT": '#e65857',"ADV": '#D0FF00',"INTJ": '#501D5B',"SYM": '#2D157B',
-        "SCONJ": '#2E3390',"SPACE": '#213766',"X": '#2A565C'
-    }
+    # __color_PoS ={
+    #     "PROPN": '#B3B3B3',"AUX": '#47CCD3',"VERB": '#FF0000',"PRON": '#0008FF',"NOUN": '#51FF00',
+    #     "CCONJ": '#dcb559',"ADP": '#f5bc6b',"DET": '#f5aa60',"PART": '#f39659',"ADJ": '#FF00FB',
+    #     "NUM": '#ec6e55',"PUNCT": '#e65857',"ADV": '#D0FF00',"INTJ": '#501D5B',"SYM": '#2D157B',
+    #     "SCONJ": '#2E3390',"SPACE": '#213766',"X": '#2A565C'
+    # }
 
-    __PoS = ["PROPN","AUX","VERB","PRON","NOUN","CCONJ","ADP","DET","PART","ADJ","NUM","PUNCT","ADV","INTJ","SYM","SCONJ","SPACE","X"]
+    # __PoS = ["PROPN","AUX","VERB","PRON","NOUN","CCONJ","ADP","DET","PART","ADJ","NUM","PUNCT","ADV","INTJ","SYM","SCONJ","SPACE","X"]
 
-    __PoS_Converter = {"PROPN":"Proper noun","AUX":"Auxiliary verb",
-        "VERB":"Verb","PRON":"Pronoun","NOUN":"Noun","CCONJ":"Coordinating conjunction",
-        "ADP":"Adposition","DET":"Determinative","PART":"Part",
-        "ADJ":"Adjective","NUM":"Cardinal numbers","PUNCT":"Punctuation","ADV":"Adverb",
-        "INTJ":"Interjection","SYM":"Symbol","SCONJ":"Subordinating conjunction",
-        "SPACE":"Space","X":"Unknowx","":"--"}
+    # __PoS_Converter = {"PROPN":"Proper noun","AUX":"Auxiliary verb",
+    #     "VERB":"Verb","PRON":"Pronoun","NOUN":"Noun","CCONJ":"Coordinating conjunction",
+    #     "ADP":"Adposition","DET":"Determinative","PART":"Part",
+    #     "ADJ":"Adjective","NUM":"Cardinal numbers","PUNCT":"Punctuation","ADV":"Adverb",
+    #     "INTJ":"Interjection","SYM":"Symbol","SCONJ":"Subordinating conjunction",
+    #     "SPACE":"Space","X":"Unknowx","":"--"}
     
-    __PoS_defalut = ["PROPN","AUX","VERB","PRON","NOUN","CCONJ","NUM"]
+    # __PoS_defalut = ["PROPN","AUX","VERB","PRON","NOUN","CCONJ","NUM"]
         
     __sav_image = {
         'toImageButtonOptions': {
@@ -143,13 +144,22 @@ class DataProvider:
     def getTagColumnNameRel() -> str:
         return 'PS_tagsRel'
     
+    
     @staticmethod
     def getFVPoColumnName() -> str:
         return 'Relations'
     
     @staticmethod
+    def getStatementName() -> str:
+        return 'Statement'
+    
+    @staticmethod
     def getFVPoColors() -> Dict:
         return DataProvider.__color_FVP
+
+    @staticmethod
+    def getFVPoTextColors() -> Dict:
+        return DataProvider.__color_FVP_text
     
     @staticmethod
     def getContentColumnName() -> str:

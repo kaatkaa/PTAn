@@ -29,6 +29,7 @@ class SingleCorpusMenu:
         # tmp = DataProvider.getPTAnCfgJson()
 
         self.__ptan_df = pd.DataFrame()
+        self.__ptanStatements_df = pd.DataFrame()
         self.__ptan_old = pd.DataFrame()
 
         if self.__checkSessionState():
@@ -61,8 +62,10 @@ class SingleCorpusMenu:
         self.__iat_old = self.__ptan_df.copy(deep=True)
 
     def __update_corpora_checkbox(self):
+        subjectDict = dict()
         colsToMerge = DataProvider.getTagColumnsLstToMerge()
         colsRel = DataProvider.getTagColumnsLstToMergeRel()
+        relLst = DataProvider.getPTA_RelSP_Dims()
         def prepareDf(lst):
             if len(lst) > 1:
                 result = pd.concat(lst,ignore_index=True)        
@@ -71,6 +74,7 @@ class SingleCorpusMenu:
             else:
                 result = pd.DataFrame()
             return result
+        
         def logicFunc(*args) -> str:
             if args[0] == 1:
                 return colsToMerge[0]
@@ -80,6 +84,7 @@ class SingleCorpusMenu:
                 return colsToMerge[2]
             else:
                 return "Error"
+            
         def logicFuncRel(*args) -> str:
             def checkRel() -> str:
                 if args[3] == "no_relation":
@@ -87,13 +92,24 @@ class SingleCorpusMenu:
                 else:
                     return "_Rel"
             if args[0] == 1:
-                return colsToMerge[0] + checkRel()
+                return relLst[0].replace("_noRel","") + checkRel()
             elif args[1] == 1:
-                return colsToMerge[1] + checkRel()
+                return relLst[1].replace("_noRel","") + checkRel()
             elif args[2] == 1:
-                return colsToMerge[2] + checkRel()
+                return relLst[2].replace("_noRel","") + checkRel()
             else:
                 return "Rel--Error"
+            
+        def concattContents(*args) -> str:
+            if args[0] == 1:
+                if args[1] != "no_relation":
+                    subjectDict[args[1]] = True
+                    return ' '.join(self.__ptan_df['content'].loc[self.__ptan_df["mid"] == args[1]].values) + " " + args[2]
+                else:
+                    return "??predicate??" + " " + args[2]
+            else:
+                return "£§£====§§"
+
         ptan_dfLst = []
         iat_dfLst = []
         for key in self.__dataDic:
@@ -109,6 +125,10 @@ class SingleCorpusMenu:
                 self.__ptan_df[colsToMerge].apply(lambda x: logicFunc(x[colsToMerge[0]], x[colsToMerge[1]], x[colsToMerge[2]]), axis=1)
             self.__ptan_df[DataProvider.getTagColumnNameRel()] = \
                 self.__ptan_df[colsRel].apply(lambda x: logicFuncRel(x[colsRel[0]], x[colsRel[1]], x[colsRel[2]], x[colsRel[3]]), axis=1)
+            self.__ptanStatements_df = self.__ptan_df.copy(deep=True)
+            self.__ptanStatements_df[DataProvider.getStatementName()] = \
+                self.__ptan_df[["Predicate", "Links", "content"]].apply(lambda x: concattContents(x["Predicate"], x["Links"], x["content"]), axis=1)
+            self.__ptanStatements_df = self.__ptanStatements_df[self.__ptanStatements_df[DataProvider.getStatementName()] != "£§£====§§"]
                 
         self.__iat_df = prepareDf(iat_dfLst)
         self.__ptan_old = self.__ptan_df.copy(deep=True)
@@ -212,6 +232,10 @@ class SingleCorpusMenu:
             __DistribCfg = {
                 'prefix':'distributionsSP_',
                 'imediatePlot': True,
+                'categoriesColumn': DataProvider.getTagColumnName(),
+                'categoriesColumnRel': DataProvider.getTagColumnNameRel(),
+                'categoriesLst': DataProvider.getPTA_NrelSP_Dims(),
+                'categoriesLstRel': DataProvider.getPTA_RelSP_Dims(),
                 'showPercentageNumber': True,
                 'showCategoriesInterface': True,
                 'showStopWordsInterface':False
@@ -242,7 +266,7 @@ class SingleCorpusMenu:
                 'categories': DataProvider.getFVPoDims(),
                 'categoriesColumn': DataProvider.getFVPoColumnName(),
                 'palette': DataProvider.getFVPoColors(),
-                'text_color': DataProvider.getFVPoColors(),
+                'text_color': DataProvider.getFVPoTextColors(),
                 'prefix':'distributionsFVPo_',
                 'imediatePlot': True,
                 'showPercentageNumber': True,

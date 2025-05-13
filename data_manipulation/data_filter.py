@@ -79,12 +79,13 @@ class DataFilter:
             if self.__cf['categoryIndex'] == 0:
                 self.__outputData = self.__outputData.loc[self.__outputData[self.__cf['categoriesColumn']].isin(self.__cf['categoriesLst'])]
             elif self.__cf['categoryIndex'] == 1:
-                self.__outputData = self.__outputData.loc[self.__outputData[self.__cf['categoriesColumn']].isin(self.__cf['categoriesLstRel'])]
+                print("self.__cf['categoriesColumnRel']=",self.__cf['categoriesColumnRel'],"self.__cf['categoriesLstRel']=",self.__cf['categoriesLstRel'])
+                self.__outputData = self.__outputData.loc[self.__outputData[self.__cf['categoriesColumnRel']].isin(self.__cf['categoriesLstRel'])]
         else:
             self.__outputData = self.__d
 
-        if self.__cf['showStopWordsInterface'] and self.__cf['useStopwords'] and len(self.__outputData) > 0:
-            self.__RemoveStopWordsFromDf(self.__outputData, self.__cf['content'], self.__stop_words_set)
+        # if self.__cf['showStopWordsInterface'] and self.__cf['useStopwords'] and len(self.__outputData) > 0:
+        #     self.__RemoveStopWordsFromDf(self.__outputData, self.__cf['content'], self.__stop_words_set)
 
         if self.__cf['imediatePlot']:
             if self.__cf['unitTextOrSpeaker'] == "Text":
@@ -94,17 +95,22 @@ class DataFilter:
                 self.__outputData = self.__outputData.loc[
                     self.__outputData[DataProvider.getSpeakerColumnNamesLst()[0]] == st.session_state[st.session_state['cfgId']]['unitSpeakerSel']
                 ]
+
             self.__outDict["whole Text"] = self.__outputData
-            self.__outDict["grupped Text"] = self.__distributionData(self.__outputData, self.__cf['categoriesColumn'])
-        else:
-            if self.__cf['unitTextOrSpeaker'] == "Text":
-                pass
-            elif self.__cf['unitTextOrSpeaker'] == "Speaker":
-                self.__outputData = self.__outputData.loc[
-                    self.__outputData[DataProvider.getSpeakerColumnNamesLst()[0] == st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel']]
-                ]
-            self.__outDict["wholeAll"] = self.__outputData
-            self.__outDict["gruppedAll"] = self.__distributionData(self.__outputData, self.__cf['categoriesColumn']) 
+            if self.__cf['categoryIndex'] == 0:
+                self.__outDict["grupped Text"] = self.__distributionData(self.__outputData, DataProvider.getTagColumnName())
+            elif self.__cf['categoryIndex'] == 1:
+                self.__outDict["grupped Text"] = self.__distributionData(self.__outputData, DataProvider.getTagColumnNameRel())
+
+        # else:
+        #     if self.__cf['unitTextOrSpeaker'] == "Text":
+        #         pass
+        #     elif self.__cf['unitTextOrSpeaker'] == "Speaker":
+        #         self.__outputData = self.__outputData.loc[
+        #             self.__outputData[DataProvider.getSpeakerColumnNamesLst()[0] == st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel']]
+        #         ]
+        #     self.__outDict["wholeAll"] = self.__outputData
+        #     self.__outDict["gruppedAll"] = self.__distributionData(self.__outputData, self.__cf['categoriesColumn']) 
 
     def __distributionData(self, data, column):
         if self.__cf['unitPercentNumber'] == "Percentage":

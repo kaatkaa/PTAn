@@ -41,15 +41,19 @@ __AnConfig = {
     'unitSpeakerLst': None,
     'unitSpeakerSel': None,
     'unitSpeakerSelOld': None,
-    #Number or percentage
+    # Number or percentage
     'showPercentageNumber': False,
     'unitPercentNumberIndex': 0,
     'unitPercentNumber': 'Percentage',
     'unitsPercentageNumber': ('Percentage','Number'),
-    #categories interface
+    # categories interface
     'showCategoriesInterface': False,
+    # The index of the preselected option on first render - in radiobutton! -> to switch between different multiselect! 
+    # If None, will initialize empty and return None until the user selects an option. 
+    # Defaults to 0 (the first option).
     'categoryIndex': 0,
     'categoriesColumn': '',
+    # in multiselect option
     'categoriesLst': DataProvider.getPTA_NrelSP_Dims(),
     'categoriesLstRel': DataProvider.getPTA_RelSP_Dims(),
     'categoriesLstFVPo': DataProvider.getFVPoDims(),
@@ -68,7 +72,7 @@ st.set_page_config(layout="wide")
 
 # ******************* path to file **************************************
 
-__PTAn_xlsx = r"./data_xlsx/PTAn.xlsx"
+__PTAn_xlsx = r"./data_xlsx/PTAn4.xlsx"
 
 # ********************** functions **************************************
 
