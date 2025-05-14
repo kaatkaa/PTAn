@@ -111,8 +111,11 @@ class SingleCorpusMenu:
                     return "??predicate??" + " " + args[2]
             else:
                 return "£§£====§§"
-            
+        
+        midFlag=False
         def subjectAdder(*args) -> str:
+            if args[1] == "no-mid":
+                midFlag=True
             if args[0] == 0:
                 if args[1] not in subjectDict:
                     return 1
@@ -142,7 +145,10 @@ class SingleCorpusMenu:
             self.__ptanStatements_df = self.__ptanStatements_df[self.__ptanStatements_df[DataProvider.getStatementName()] != "£§£====§§"]
             # The below only works if subjectDict is properly loaded
             self.__ptan_df['xxx'] = self.__ptan_df[["Predicate", "mid"]].apply(lambda x: subjectAdder(x["Predicate"], x["mid"]), axis=1)
-            self.__ptan_df[DataProvider.getStatementName()] = "??Subject?? " + self.__ptan_df['content'] 
+            if midFlag: 
+                self.__ptan_df[DataProvider.getStatementName()] = self.__ptan_df['content']
+            else:
+                self.__ptan_df[DataProvider.getStatementName()] = "??Subject?? " + self.__ptan_df['content']
             self.__ptanStatements_df = pd.concat([self.__ptanStatements_df, self.__ptan_df.loc[self.__ptan_df['xxx'] == 1]])
                 
         self.__iat_df = prepareDf(iat_dfLst)
