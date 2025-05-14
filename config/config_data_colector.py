@@ -136,10 +136,10 @@ class DataProvider:
     @staticmethod
     def getTableFormat():
         return DataProvider.__tableFormat
-    
+
     @staticmethod
-    def getSpeakerColumnNamesLst() -> List[str]:
-        return ['speaker','speaker_conclusion','speaker_premise']
+    def getSpeakerColumnName() -> str:
+        return 'speaker'
 
     @staticmethod
     def getSubPredColumnName() -> str:

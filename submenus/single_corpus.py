@@ -204,7 +204,7 @@ class SingleCorpusMenu:
                 not bool(st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'])
             )
             if st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] == 1:
-                st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = self.__ptan_df[DataProvider.getSpeakerColumnNamesLst()[0]].unique().tolist()
+                st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = self.__ptan_df[DataProvider.getSpeakerColumnName()].unique().tolist()
                 if st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] == None:
                     st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerLst'][0]
                 elif st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] == "Text":

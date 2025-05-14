@@ -94,7 +94,7 @@ class DataFilter:
             elif self.__cf['unitTextOrSpeaker'] == "Speaker":
                 # not refreshing in filterInterface!!!
                 self.__outputData = self.__outputData.loc[
-                    self.__outputData[DataProvider.getSpeakerColumnNamesLst()[0]] == st.session_state[st.session_state['cfgId']]['unitSpeakerSel']
+                    self.__outputData[DataProvider.getSpeakerColumnName()] == st.session_state[st.session_state['cfgId']]['unitSpeakerSel']
                 ]
 
             self.__outDict["whole Text"] = self.__outputData
