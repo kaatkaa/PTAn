@@ -97,7 +97,7 @@ def __load_data(dir_address: str) -> dict[str : pd.DataFrame()]:
 def __MainPage():
     st.title("Analytic Technology")
     DataProvider.addSpacelines(2)
-    st.write("PTAn_ver_0.1a")
+    st.write("PTAn_ver_0.20")
     with st.expander("Read abstract"):
         DataProvider.addSpacelines(1)
         st.write("""

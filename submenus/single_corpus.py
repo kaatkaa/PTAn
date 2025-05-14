@@ -11,7 +11,9 @@ from graphic_components.pieChart import Piechart2
 from graphic_components.barChart import Barchart2
 from graphic_components.table import Table2
 from graphic_components.textAnalysis import Cases2
+from graphic_components.wordCloudFreq import WordCloudOfFreq
 from config.config_data_colector import DataProvider
+from data_manipulation.data_manipulator import DataManipulator
 from submenus.tweaker import st_tweaker
 # from st_ant_tree import st_ant_tree
 from streamlit_modal import Modal
@@ -136,7 +138,9 @@ class SingleCorpusMenu:
             self.__ptanStatements_df = self.__ptan_df.copy(deep=True)
             self.__ptanStatements_df[DataProvider.getStatementName()] = \
                 self.__ptan_df[["Predicate", "Links", "content"]].apply(lambda x: concattContents(x["Predicate"], x["Links"], x["content"]), axis=1)
+            # The below loads subjectDict
             self.__ptanStatements_df = self.__ptanStatements_df[self.__ptanStatements_df[DataProvider.getStatementName()] != "£§£====§§"]
+            # The below only works if subjectDict is properly loaded
             self.__ptan_df['xxx'] = self.__ptan_df[["Predicate", "mid"]].apply(lambda x: subjectAdder(x["Predicate"], x["mid"]), axis=1)
             self.__ptan_df[DataProvider.getStatementName()] = "??Subject?? " + self.__ptan_df['content'] 
             self.__ptanStatements_df = pd.concat([self.__ptanStatements_df, self.__ptan_df.loc[self.__ptan_df['xxx'] == 1]])
@@ -229,7 +233,7 @@ class SingleCorpusMenu:
             st.subheader("Statictical module")
             st.write("Distribution")
             module_choice = st.radio("An. Module", \
-                                        ("SP","FVPo","SP->FVPo"), \
+                                        ("Subjects_WordCloud","SP","FVPo","SP->FVPo"), \
                                         key=self.__prefix+"post", label_visibility="hidden"
                                     )
         st.markdown("""
@@ -239,7 +243,28 @@ class SingleCorpusMenu:
         }
         </style>
         """,unsafe_allow_html=True)
-        if module_choice == "SP":
+        if module_choice == "Subjects_WordCloud":
+            __DistribCfg = {
+                'prefix':'WordCloud_Subjects',
+                'imediatePlot': True,
+                'showRelationalRadiobutton': False,
+                'categoriesColumn': DataProvider.getSubPredColumnName(),
+                'categoriesColumnRel': "",
+                'categoriesLst': DataProvider.getPTA_NrelS_Dims(),
+                'categoriesLstRel': [],
+                'showPercentageNumber': False,
+                'showCategoriesInterface': True,
+                'showStopWordsInterface':False,
+                'textColumnToShow': DataProvider.getContentColumnName()
+            }
+            DataProvider.updateGlobalConfig(config=__DistribCfg)
+            st.session_state[st.session_state['cfgId']] = \
+                FilterInterface(config=st.session_state[st.session_state['cfgId']]).getConfig()
+            dataDict = DataFilter(data=self.__ptan_df,config=st.session_state[st.session_state['cfgId']]).getDataDict()
+            if len(self.__ptan_df) > 0:
+                WordCloudOfFreq(dataDic=DataManipulator.getDictFreq(d=dataDict['whole Text'],colLst=[DataProvider.getContentColumnName()]), 
+                                config=st.session_state[st.session_state['cfgId']],title="Wordcloud of selected subjects:")
+        elif module_choice == "SP":
             __DistribCfg = {
                 'prefix':'distributionsSP_',
                 'imediatePlot': True,

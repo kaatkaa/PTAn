@@ -8,10 +8,10 @@ from typing import Any, Tuple, List, Dict
 from wordcloud import WordCloud
 from config.config_data_colector import DataProvider
 
-from graphic_components.superComponent import SuperChartComponent
+from graphic_components.superComponent import SuperWordCloudFreq
 sys.path.insert(0,"..")
 
-class WordCloudOfFreq(SuperChartComponent):
+class WordCloudOfFreq(SuperWordCloudFreq):
 
     def getChartObj(self, freqDict: Dict[str,int], t: str) -> Any:
 

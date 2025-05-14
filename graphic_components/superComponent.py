@@ -26,7 +26,7 @@ class SuperChartComponent(dataHandlerDisplayInterface):
         self.__data = {}
         if self._cf['imediatePlot']:
             for key in dataDic.keys():
-                #print(key)
+                print(key)
                 if not key.startswith("whole"):
                     title = re.sub("gruppedAll|grupped","",key)
                     self.dataDisplay(dataDic[key],title)
@@ -59,6 +59,31 @@ class SuperTextComponent(dataHandlerDisplayInterface):
 
     def getTextObj(self, data: Any, t: str) -> Any:
         st.write("This is SuperChartComponent method that should be overlapped.")
+
+    def getTextDic(self) -> Dict[str, Any]:
+        return self.__textDict
+    
+    def getChartsDic(self) -> Dict[str, Any]:
+        return self.__chartDict
+    
+class SuperWordCloudFreq(dataHandlerDisplayInterface):
+
+    def __init__(self, dataDic: Dict[str, int], config: Dict[str, Any], title) -> None:
+        self._cf = config
+        self.__chartDict = {}
+        self.__textDict = {}
+        if self._cf['imediatePlot']:
+            self.dataDisplay(dataDic,title)
+        else:
+            for ctr, key in enumerate(dataDic.keys()):
+                self._cf['subChartPosition'] = ctr
+                if self._cf['objectToEnable'] == "Chart":
+                    self.__chartDict[key] = self.getChartObj(dataDic[key],key)
+                elif self._cf['objectToEnable'] == "Text":
+                    self.__textDict[key] = self.getTextObj(dataDic[key],key)
+                    
+    def getTextObj(self, data: Any, t: str) -> Any:
+        st.write("This is SuperWordCloudFreq 'getTextObj' method that should be overlapped.")
 
     def getTextDic(self) -> Dict[str, Any]:
         return self.__textDict

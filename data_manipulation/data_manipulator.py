@@ -28,6 +28,14 @@ class DataManipulator:
                     if t in PSPset:
                         tags[t] = tags.get(t, 0) + 1
         return tags
+
+    @staticmethod
+    def getDictFreq(d: pd, colLst: List[str]):
+        tags = dict()
+        for column in colLst:
+            for tag in d[column].tolist():
+                tags[tag] = tags.get(tag, 0) + 1
+        return tags
     
     @staticmethod
     def getTagsPercentageFreq(d: pd, colLst: List[str], PSPset: Set[str]) -> Dict[str, int]:

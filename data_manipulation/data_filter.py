@@ -105,16 +105,6 @@ class DataFilter:
             elif self.__cf['categoryIndex'] == 1:
                 self.__outDict["grupped Text"] = self.__distributionData(self.__outputData, self.__cf['categoriesColumnRel'])
 
-        # else:
-        #     if self.__cf['unitTextOrSpeaker'] == "Text":
-        #         pass
-        #     elif self.__cf['unitTextOrSpeaker'] == "Speaker":
-        #         self.__outputData = self.__outputData.loc[
-        #             self.__outputData[DataProvider.getSpeakerColumnNamesLst()[0] == st.session_state[st.session_state['cfgId']][self.__prefix+'unitSpeakerSel']]
-        #         ]
-        #     self.__outDict["wholeAll"] = self.__outputData
-        #     self.__outDict["gruppedAll"] = self.__distributionData(self.__outputData, self.__cf['categoriesColumn']) 
-
     def __distributionData(self, data, column):
         if self.__cf['unitPercentNumber'] == "Percentage":
             return DataManipulator.getGruppedPercentages(d=data, 

@@ -15,8 +15,9 @@ class DataProvider:
     ]
 
     __PTAn_file = 'config/PTAnConfig.json'
-    __lst_of_st_pred_NoRel = ['Predicate', 'Subject', 'ImplicitSubject']
-    __lst_of_st_pred_Rel = ['S_noRel', 'P_noRel', 'IS_noRel','S_Rel', 'P_Rel', 'IS_Rel']
+    __lst_of_subj_pred_NoRel = ['Predicate', 'Subject', 'ImplicitSubject']
+    __lst_of_subj_NoRel = ['Subject', 'ImplicitSubject']
+    __lst_of_subj_pred_Rel = ['S_noRel', 'P_noRel', 'IS_noRel','S_Rel', 'P_Rel', 'IS_Rel']
     __lst_of_SPVo = ["VALUE","FACT","POLICY",'no_relation','relation']
 
     __color_SP_noRel = {'Subject':'#008CFF','Predicate':'#E02D00','ImplicitSubject':'#01FCF4'}
@@ -102,11 +103,15 @@ class DataProvider:
 
     @staticmethod
     def getPTA_NrelSP_Dims():
-        return DataProvider.__lst_of_st_pred_NoRel
+        return DataProvider.__lst_of_subj_pred_NoRel
+    
+    @staticmethod
+    def getPTA_NrelS_Dims():
+        return DataProvider.__lst_of_subj_NoRel
 
     @staticmethod
     def getPTA_RelSP_Dims():
-        return DataProvider.__lst_of_st_pred_Rel
+        return DataProvider.__lst_of_subj_pred_Rel
     
     @staticmethod
     def getFVPoDims() -> List[str]:
@@ -167,11 +172,11 @@ class DataProvider:
     
     @staticmethod
     def getTagColumnsLstToMerge() -> List[str]:
-        return DataProvider.__lst_of_st_pred_NoRel
+        return DataProvider.__lst_of_subj_pred_NoRel
     
     @staticmethod
     def getTagColumnsLstToMergeRel() -> List[str]:
-        return DataProvider.__lst_of_st_pred_NoRel + ['Relations']
+        return DataProvider.__lst_of_subj_pred_NoRel + ['Relations']
     
     @staticmethod
     def getCustomStopWords() -> List[str]:
