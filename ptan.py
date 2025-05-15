@@ -95,13 +95,20 @@ def __load_data(dir_address: str) -> dict[str : pd.DataFrame()]:
 # ******************* multi pages functions **************************************
 
 def __MainPage():
-    st.title("Analytic Technology")
+    st.title("Periodic Table of Arguments Analytic (PTAn)")
     DataProvider.addSpacelines(2)
     st.write("PTAn_ver_0.20")
     with st.expander("Read abstract"):
         DataProvider.addSpacelines(1)
         st.write("""
-            First PTAn implementation...
+            The development of the PTAn analytic web application, designed to address the conceptual framework gap in argumentation analysis. 
+            Traditional annotation methods primarily rely on conclusion-premise pairs, which often overlook the nuanced subject-predicate structures 
+            that can provide deeper insights into argumentative discourse. While previous work, notably by Visser et al. (2020), 
+            has explored argument schemes and types, there remains a significant lack of large-scale annotations in this area. 
+            To fill this void, we are preparing comprehensive annotations that will enhance the understanding of argumentation. 
+            The PTAn application represents the first implementation of parametric discourse analysis informed by the Periodic Table of Arguments (PTA), 
+            facilitating a more structured approach to argument evaluation. By innovatively combining natural language processing (NLP) techniques with advanced data representation methods, 
+            PTAn aims to revolutionize the way arguments are analysed and understood, opening the way for future research in the field.
             """
         )
 
