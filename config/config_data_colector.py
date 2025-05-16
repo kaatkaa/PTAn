@@ -18,7 +18,8 @@ class DataProvider:
     __lst_of_subj_pred_NoRel = ['Predicate', 'Subject', 'ImplicitSubject']
     __lst_of_subj_NoRel = ['Subject', 'ImplicitSubject']
     __lst_of_subj_pred_Rel = ['S_noRel', 'P_noRel', 'IS_noRel','S_Rel', 'P_Rel', 'IS_Rel']
-    __lst_of_SPVo = ["VALUE","FACT","POLICY",'no_relation','relation']
+    #__lst_of_SPVo = ["VALUE","FACT","POLICY",'no_relation','relation']
+    __lst_of_SPVo = ["VALUE","FACT","POLICY",'no_relation']
 
     __color_SP_noRel = {'Subject':'#008CFF','Predicate':'#E02D00','ImplicitSubject':'#01FCF4'}
     __color_SP_noRel_Text = {'Subject':'#FFFFFF','Predicate':'#FFFFFF','ImplicitSubject':'#000000'}

@@ -214,7 +214,7 @@ class SingleCorpusMenu:
                 if st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] == None:
                     st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerLst'][0]
                 elif st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] == "Text":
-                    st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerSelOld']
+                    st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = st.session_state[st.session_state['cfgId']]['unitSpeakerLst'][0]
             elif st.session_state[st.session_state['cfgId']]['unitTextSpeakerIndex'] == 0:
                 st.session_state[st.session_state['cfgId']]['unitSpeakerLst'] = None
                 st.session_state[st.session_state['cfgId']]['unitSpeakerSel'] = "Text"

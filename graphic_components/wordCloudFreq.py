@@ -43,6 +43,7 @@ class WordCloudOfFreq(SuperWordCloudFreq):
             left_co, cent_co = st.columns([1,3])
             with cent_co:
                 st.image(buf)
+                #st.write(freqDict)
             with left_co:
                 btn = st.download_button(
                     label="Download as PNG",
